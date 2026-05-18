@@ -25,17 +25,7 @@ public partial class Player : CharacterBody2D
 	{
 		bool movement = true;
 		var velocity = Velocity;
-		if (Input.IsActionPressed("ui_right"))
-		{
-			currentDir = "right";
-			velocity.X = Speed;
-			velocity.Y = 0;
-		}else if (Input.IsActionPressed("ui_left"))
-		{
-			currentDir = "left";
-			velocity.X = -Speed;
-			velocity.Y = 0;
-		}else if (Input.IsActionPressed("ui_down"))
+		if (Input.IsActionPressed("ui_down"))
 		{
 			currentDir = "down";
 			velocity.X = 0;
@@ -45,6 +35,17 @@ public partial class Player : CharacterBody2D
 			currentDir = "up";
 			velocity.X = 0;
 			velocity.Y = -Speed;
+		}
+		else if (Input.IsActionPressed("ui_right"))
+		{
+			currentDir = "right";
+			velocity.X = Speed;
+			velocity.Y = 0;
+		}else if (Input.IsActionPressed("ui_left"))
+		{
+			currentDir = "left";
+			velocity.X = -Speed;
+			velocity.Y = 0;
 		}else
 		{
 			velocity.X = 0;

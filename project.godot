@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="PixelRPG"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+run/main_scene="uid://e1ay0sgxjkth"
+config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 config/icon="res://art/icon.svg"
 
 [display]

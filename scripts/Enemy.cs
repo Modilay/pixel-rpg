@@ -4,7 +4,7 @@ using System;
 public partial class Enemy : CharacterBody2D
 {
 	[Export]
-	public float Speed { get; set; } = 80f;
+	public float Speed { get; set; } = 70f;
 
 	private AnimatedSprite2D anim;
 	private Area2D detectArea;

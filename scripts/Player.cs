@@ -3,63 +3,81 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
-	
-	private string currentDir = null;
+
+	private string currentDir = "down";
 
 	[Export]
-	public float Speed {get; set;} = 100f;
+	public float Speed { get; set; } = 100f;
 
+	private bool isAttacking = false;
+
+	private AnimationPlayer animationPlayer;
 	private AnimatedSprite2D anim;
 	public override void _Ready()
 	{
 		anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 	}
 
 
-    public override void _PhysicsProcess(double delta)
-    {
-        PlayerMovement(delta);
-    }
+	public override void _PhysicsProcess(double delta)
+	{
+		PlayerAttack();
+		PlayerMovement(delta);
+	}
+
+	private void PlayerAttack()
+	{
+		if (Input.IsActionJustPressed("attack") && !isAttacking && currentDir != null)
+		{
+			animationPlayer.Play(currentDir + "_attack");
+		}
+	}
 
 	private void PlayerMovement(double delta)
 	{
-		bool movement = true;
-		var velocity = Velocity;
-		if (Input.IsActionPressed("ui_down"))
+		bool movement = false;
+		var velocity = Vector2.Zero;
+
+		if (!isAttacking)
 		{
-			currentDir = "down";
-			velocity.X = 0;
-			velocity.Y = Speed;
-		}else if (Input.IsActionPressed("ui_up"))
-		{
-			currentDir = "up";
-			velocity.X = 0;
-			velocity.Y = -Speed;
+			if (Input.IsActionPressed("ui_down"))
+			{
+				currentDir = "down";
+				velocity = Vector2.Down * Speed;
+				movement = true;
+			}
+			else if (Input.IsActionPressed("ui_up"))
+			{
+				currentDir = "up";
+				velocity = Vector2.Up * Speed;
+				movement = true;
+			}
+			else if (Input.IsActionPressed("ui_right"))
+			{
+				currentDir = "right";
+				velocity = Vector2.Right * Speed;
+				movement = true;
+			}
+			else if (Input.IsActionPressed("ui_left"))
+			{
+				currentDir = "left";
+				velocity = Vector2.Left * Speed;
+				movement = true;
+			}
+
 		}
-		else if (Input.IsActionPressed("ui_right"))
-		{
-			currentDir = "right";
-			velocity.X = Speed;
-			velocity.Y = 0;
-		}else if (Input.IsActionPressed("ui_left"))
-		{
-			currentDir = "left";
-			velocity.X = -Speed;
-			velocity.Y = 0;
-		}else
-		{
-			velocity.X = 0;
-			velocity.Y = 0;
-			movement = false;
-		}
-		AnimmPlay(movement);
-		
+
 		Velocity = velocity;
+		AnimmPlay(movement);
+
 		MoveAndSlide();
 	}
 
 	private void AnimmPlay(bool movement)
 	{
+		if (isAttacking)
+			return;
 		bool filp = false;
 		string animName = null;
 		switch (currentDir)
@@ -82,5 +100,16 @@ public partial class Player : CharacterBody2D
 			animName += "idle";
 		anim.FlipH = filp;
 		anim.Play(animName);
+	}
+
+
+	public void AttackAnimationStart()
+	{
+		isAttacking = true;
+	}
+
+	public void AttackAnimationEnd()
+	{
+		isAttacking = false;
 	}
 }

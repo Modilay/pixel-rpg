@@ -3,9 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://d1a07d5i0wx4b" path="res://art/characters/player.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://cktyu7cmm3acm" path="res://scripts/Player.cs" id="1_g2els"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
-size = Vector2(13, 19)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("1_3vyb7")
 region = Rect2(0, 384, 48, 48)
@@ -416,14 +413,20 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
+radius = 5.0
+
 [node name="player" type="CharacterBody2D" unique_id=728109248]
+collision_layer = 3
+collision_mask = 3
+motion_mode = 1
 script = ExtResource("1_g2els")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=276460650]
-position = Vector2(0.5, 7.5)
-shape = SubResource("RectangleShape2D_g2els")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1231152876]
+position = Vector2(0, -13)
 sprite_frames = SubResource("SpriteFrames_ha2mi")
-animation = &"front_idle"
+animation = &"side_walk"
 autoplay = "front_idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=276460650]
+shape = SubResource("CircleShape2D_g2els")

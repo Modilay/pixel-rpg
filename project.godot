@@ -23,6 +23,11 @@ window/stretch/scale=4.0
 
 project/assembly_name="PixelRPG"
 
+[layer_names]
+
+2d_physics/layer_1="建筑地形"
+2d_physics/layer_2="生物"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

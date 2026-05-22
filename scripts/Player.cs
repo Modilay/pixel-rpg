@@ -8,7 +8,7 @@ public partial class Player : CharacterBody2D, IDamageable
 	private string currentDir = "down";
 
 	[Export]
-	public float Health {get;set;} = 100f;
+	public float Health { get; set; } = 100f;
 	[Export]
 	public float Speed { get; set; } = 100f;
 	[Export]
@@ -16,9 +16,9 @@ public partial class Player : CharacterBody2D, IDamageable
 	[Export]
 	public float KnockbackForce { get; set; } = 40f;
 
-    public bool IsAlive => Health > 0;
+	public bool IsAlive => Health > 0;
 
-    private bool isAttacking = false;
+	private bool isAttacking = false;
 	private bool isHurt = false;
 	private float hurtTimer = 0;
 	private HashSet<HurtBox> attackEnemies = new HashSet<HurtBox>();
@@ -28,8 +28,6 @@ public partial class Player : CharacterBody2D, IDamageable
 	private Area2D attackArea;
 	private HurtBox hurtBox;
 	private ProgressBar healthBar;
-
-
 
 	public override void _Ready()
 	{
@@ -42,18 +40,16 @@ public partial class Player : CharacterBody2D, IDamageable
 		attackArea.AreaEntered += OnAttackAreaHit;
 	}
 
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
 		healthBar.Value = Mathf.Clamp(Health, 0, healthBar.MaxValue);
 		healthBar.Visible = healthBar.Value < healthBar.MaxValue;
-    }
-
-
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if(Health > 0)
+		if (Health > 0)
 		{
 
 			if (isHurt)
@@ -159,7 +155,6 @@ public partial class Player : CharacterBody2D, IDamageable
 		anim.Play(animName);
 	}
 
-
 	public void AttackAnimationStart()
 	{
 		attackEnemies.Clear();
@@ -176,7 +171,7 @@ public partial class Player : CharacterBody2D, IDamageable
 
 	private void OnAttackAreaHit(Area2D area)
 	{
-		if(area is HurtBox hurtBox && hurtBox.HurtBoxOwner != this && !attackEnemies.Contains(hurtBox))
+		if (area is HurtBox hurtBox && hurtBox.HurtBoxOwner != this && !attackEnemies.Contains(hurtBox))
 		{
 			attackEnemies.Add(hurtBox);
 
@@ -186,10 +181,10 @@ public partial class Player : CharacterBody2D, IDamageable
 		}
 	}
 
-    public DamageResult TakeDamage(float damage, float knockbackForce = 0f, Vector2? knockbackDirection = null, Node2D damageSource = null, float hurtDuration = 0.2f)
-    {
+	public DamageResult TakeDamage(float damage, float knockbackForce = 0f, Vector2? knockbackDirection = null, Node2D damageSource = null, float hurtDuration = 0.2f)
+	{
 		var result = DamageResult.Damaged;
-		if(Health > 0)
+		if (Health > 0)
 		{
 			Health -= damage;
 			GD.Print($"{Name}受到 {damageSource?.Name ?? "未知来源"} 的 {damage}点伤害，剩余生命: {Health}");
@@ -204,8 +199,7 @@ public partial class Player : CharacterBody2D, IDamageable
 			hurtTimer = hurtDuration;
 			return result;
 		}
-        
-        return DamageResult.None;
-    }
 
+		return DamageResult.None;
+	}
 }

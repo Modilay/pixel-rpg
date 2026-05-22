@@ -28,6 +28,7 @@ public partial class Enemy : CharacterBody2D, IDamageable
 	private Area2D attackRange;
 	private Area2D attackArea;
 	private Area2D hurtBox;
+	private ProgressBar healthBar;
 
 	// -------------------------------------------
 
@@ -54,6 +55,7 @@ public partial class Enemy : CharacterBody2D, IDamageable
 		attackRange = GetNode<Area2D>("AttackRange");
 		attackArea = GetNode<Area2D>("AttackArea");
 		hurtBox = GetNode<Area2D>("HurtBox");
+		healthBar = GetNode<ProgressBar>("HealthBar");
 
 		detectArea.AreaEntered += AreaDetectEnter;
 		detectArea.AreaExited += AreaDetectExit;
@@ -63,6 +65,13 @@ public partial class Enemy : CharacterBody2D, IDamageable
 
 		attackArea.AreaEntered += AttackAreaEntered;
 	}
+
+	public override void _Process(double delta)
+    {
+        base._Process(delta);
+		healthBar.Value = Mathf.Clamp(Health, 0, healthBar.MaxValue);
+		healthBar.Visible = healthBar.Value < healthBar.MaxValue;
+    }
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -196,7 +205,7 @@ public partial class Enemy : CharacterBody2D, IDamageable
 		if (area is HurtBox hurtBox && hurtBox.HurtBoxOwner != this && hurtBox.Damageable?.IsAlive == true)
 		{
 			var dir = (hurtBox.HurtBoxOwner.Position - this.Position).Normalized();
-			var result = hurtBox.Damageable?.TakeDamage(AttackPower, KnockbackForce, dir, this);
+			var result = hurtBox.Damageable?.TakeDamage(AttackPower, KnockbackForce, dir, this,0.1f);
 			if(result == DamageResult.Death)
 			{
 				attackRangeTargets.Remove(hurtBox.HurtBoxOwner);

@@ -27,6 +27,7 @@ public partial class Player : CharacterBody2D, IDamageable
 	private AnimatedSprite2D anim;
 	private Area2D attackArea;
 	private HurtBox hurtBox;
+	private ProgressBar healthBar;
 
 
 
@@ -36,9 +37,18 @@ public partial class Player : CharacterBody2D, IDamageable
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		attackArea = GetNode<Area2D>("AttackArea");
 		hurtBox = GetNode<HurtBox>("HurtBox");
+		healthBar = GetNode<ProgressBar>("HealthBar");
 
 		attackArea.AreaEntered += OnAttackAreaHit;
 	}
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+		healthBar.Value = Mathf.Clamp(Health, 0, healthBar.MaxValue);
+		healthBar.Visible = healthBar.Value < healthBar.MaxValue;
+    }
+
 
 
 	public override void _PhysicsProcess(double delta)
@@ -172,7 +182,7 @@ public partial class Player : CharacterBody2D, IDamageable
 
 			var dir = (hurtBox.HurtBoxOwner.Position - this.Position).Normalized();
 
-			hurtBox.Damageable?.TakeDamage(AttackPower, KnockbackForce, dir, this);
+			hurtBox.Damageable?.TakeDamage(AttackPower, KnockbackForce, dir, this, 0.1f);
 		}
 	}
 

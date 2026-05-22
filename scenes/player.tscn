@@ -775,7 +775,6 @@ collision_layer = 3
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_g2els")
-Health = 9999999.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=928259134]
 libraries/ = SubResource("AnimationLibrary_fjrip")
@@ -825,3 +824,13 @@ HurtBoxOwner = NodePath("..")
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_g2els")
 debug_color = Color(0.2706848, 0.63035727, 0.16679603, 0.41960785)
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=82526748]
+modulate = Color(0, 0.8156863, 0.18431373, 1)
+offset_left = -5.0
+offset_top = 5.0
+offset_right = 15.0
+offset_bottom = 10.0
+scale = Vector2(0.5, 0.5)
+value = 100.0
+show_percentage = false
